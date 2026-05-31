@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
+const { initDB } = require("./config/dynamodb");
 const authRoutes = require("./routes/auth");
 const messageRoutes = require("./routes/messages");
 const app = express();
@@ -10,16 +10,13 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+// Initialize DynamoDB tables on startup
+initDB()
   .then(() => {
-    console.log("DB Connetion Successfull");
+    console.log("DynamoDB Connection & Tables Initialized Successfully");
   })
   .catch((err) => {
-    console.log(err.message);
+    console.error("DynamoDB Initialization Failed:", err.message);
   });
 
 app.get("/ping", (_req, res) => {

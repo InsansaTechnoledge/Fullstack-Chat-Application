@@ -1,11 +1,6 @@
 # Evalvo - Chat Application 
 EvalvoChat is chat application build with the power of MERN Stack
 
-
-![login page](./images/evalvo_login.png)
-
-![home page](./images/evalvo.png)
-
 ## Installation Guide
 
 ### Requirements
