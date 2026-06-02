@@ -35,7 +35,6 @@ sudo apt install -y \
   containerd.io \
   docker-buildx-plugin \
   docker-compose-plugin
-
 echo "Enabling Docker service..."
 sudo systemctl enable docker
 sudo systemctl start docker
@@ -45,6 +44,7 @@ sudo usermod -aG docker "$USER"
 
 echo ""
 echo "Docker installation completed."
+
 echo ""
 echo "Docker version:"
 docker --version || true
@@ -54,7 +54,26 @@ echo "Docker service status:"
 sudo systemctl --no-pager status docker
 
 echo ""
-echo "IMPORTANT:"
-echo "Log out and log back in, or run:"
-echo "newgrp docker"
-echo "to use Docker without sudo."
+echo "Testing Docker permissions..."
+
+if groups "$USER" | grep -q docker; then
+    echo "User is already in docker group."
+else
+    echo "User added to docker group."
+fi
+
+if docker ps >/dev/null 2>&1; then
+    echo "Docker is accessible without sudo."
+else
+    echo ""
+    echo "Docker group changes require a new login session."
+    echo "Run one of the following:"
+    echo ""
+    echo "    newgrp docker"
+    echo ""
+    echo "or reconnect via SSH:"
+    echo ""
+    echo "    exit"
+    echo "    ssh <server>"
+    echo ""
+fi
