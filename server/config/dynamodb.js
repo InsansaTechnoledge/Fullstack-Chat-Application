@@ -16,6 +16,12 @@ if (endpoint) {
     accessKeyId: "local",
     secretAccessKey: "local",
   };
+} else if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+  // Explicitly pass credentials from process.env if provided (e.g. via .env file)
+  clientConfig.credentials = {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  };
 }
 
 const dynamoClient = new DynamoDBClient(clientConfig);
